@@ -1,0 +1,21 @@
+version: 1
+assignment: no-scenarios
+
+goals:
+  - id: the-race
+    level: analyse
+    goal: >
+      Trace two holders through your acquire when both see the lease expired,
+      and work out which of them ends up owning it.
+
+  - id: clock-skew
+    level: evaluate
+    goal: >
+      Judge whose clock decides that a lease has expired, and defend the choice
+      against two machines that disagree by a second.
+
+  - id: renew-versus-acquire
+    level: analyse
+    goal: >
+      Work out what your renew does to a lease that expired a moment ago, and
+      whether that is the same as taking it.
