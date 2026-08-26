@@ -6,17 +6,21 @@ class Lease
     @now = now
   end
 
-  # Nobody holding it means it is ours.
+  # Take the lease if nobody holds it, or if whoever did has let it expire.
   def acquire(holder)
     current = @store.read(@key)
-    if current.nil?
+    if current.nil? || current[:expires] <= @now.call
       @store.write(@key, { holder: holder, expires: @now.call + @ttl_s })
       return true
     end
     current[:holder] == holder
   end
 
+  # Push the expiry out again.
   def renew(holder)
-    raise NotImplementedError
+    current = @store.read(@key)
+    return false unless current && current[:holder] == holder
+    @store.write(@key, { holder: holder, expires: @now.call + @ttl_s })
+    true
   end
 end
